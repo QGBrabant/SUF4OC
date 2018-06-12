@@ -30,5 +30,8 @@ The task to execute is specified by the first argument:
 
 ## The data file
 
-Todo.
+Each row should be of the form ``x1,x2,....,xn,y`` where ``x1,x2,...,xn`` are the features/attributes/criteria of an object, and ``y`` is its label. All values must be numbers (note that each feature domain will be represented by as a totally ordered set, so the exact values of numbers do matter).
 
+The first line is might be of the form ``option_1,option_2,....,option_n,option_n+1``, where option_i is either ``gain`` or ``cost``. If a feature is set to the same option as the label (both are set to gain or both are set to cost), then the feature has a "positive effect" (the higher the feature, the higher the label), otherwise it has a negative effect. The first line is optional. By default, the algorithm assumes that all features have a positive effect.
+
+See files in the ``datasets`` folders for examples.
