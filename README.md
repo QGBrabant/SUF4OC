@@ -2,7 +2,7 @@
 
 ## What is it
 
-This program contains algorithms for learning Ordinal Classifiers made of combinations of Sugeno Utility Functionals.
+This program contains algorithms for learning Ordinal Classifiers made of combinations of Sugeno Utility Functionals. For more information about the method, see the paper Extracting Decision Rules from Qualitative Data via Sugeno Utility Functionals. Quentin Brabant, Miguel Couceiro, Henri Prade, Didier Dubois, Agnès Rico, IPMU 2018.
 
 ## The jar file
 
@@ -13,7 +13,7 @@ java -jar SUF4OC.jar [task] [options]
 
 ### Tasks
 The task to execute is specified by the first argument:
-* ``classification``: is the only task enabled for now. It requires to specify several options. 
+* ``classification``: is the only task enabled for now. It requires to specify several options. A hyperparameter "rho" can be used. For maximizing accuracy, use rho=1. For more concise model, you can try lower values of rho (see Options).
 
 ### Options
 * ``--nonparametric``: when this option is present, the nonparametric version of the algorithm is used (rho=1.0).
