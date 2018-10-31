@@ -1,4 +1,4 @@
-# Note pour mes relecteurs de thèse : la code ici n'est pas (encore) à jour ; il le sera bientôt.
+# Note pour mes rapporteurs de thèse : la code ici n'est pas (encore) à jour ; il le sera bientôt.
 
 ## What is it
 
