@@ -71,7 +71,7 @@ Finally, rule length distribution give an average distribution of rules by size.
 
 
 
-##RL-SUF
+## RL-SUF
 
 RLSUF.jar contains a compiled version of the RL-SUF algorithm. The command line for launching the algorithm on data is
 
@@ -90,7 +90,7 @@ java -jar SRL.jar [options]
 
 
 
-###Examples
+### Examples
 
 Suppose that RLSUF.jar is in the same directory as ``dataset1.txt``.
 The command 
