@@ -1,23 +1,24 @@
 # RL-SUF / SRL
 
-SRL and RL-SUF are two algorithm for learning monotonic classifiers. SRL learns a set of decision rules of the form
+SRL and RL-SUF are two algorithms for learning monotonic classifiers. SRL learns a set of decision rules of the form
 > if feature1 >= threshold1 and feature2 >= threshold2 and ... and featureN >= thresholdN then class >= threshold
 
-while RL-SUF learns a model defined as the maximum of several SUFs (see ``Q. Brabant, M. Couceiro, D. Dubois, H. Prade, A. Rico, Extracting Decision Rules from Qualitative Data via Sugeno Utility Functionals. IPMU, 253–265, 2018``).
-This repository contains two jars SRL.jar and RL-SUF.jar.
+while RL-SUF learns a model defined as the maximum of several SUFs (see _Q. Brabant, M. Couceiro, D. Dubois, H. Prade, A. Rico, Extracting Decision Rules from Qualitative Data via Sugeno Utility Functionals. IPMU, 253–265, 2018_).
+This repository contains two jars ``SRL.jar`` and ``RL-SUF.jar``.
 
 
 ## SRL
 
-SRL.jar contains a compiled version of the SRL algorithm. The command line for launching the algorithm on data is
+``SRL.jar`` contains a compiled version of the SRL algorithm. The command line for launching the algorithm on data is
 ```
 java -jar SRL.jar [options]
 ```
 
 ### Options
-* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for the form of the data). [path] can also be replaced by ``VCDomLEMBenchmark``: in that case SRL will be run on the 12 datasets of the ``datasets`` folder (``SRL.jar`` and ``datasets`` have to be in the same folder).
+* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for the form of the data). Instead of a path, you can put ``VCDomLEMBenchmark``: in that case SRL will be run on the 12 datasets of the ``datasets`` folder (``SRL.jar`` and ``datasets`` have to be in the same folder).
 * ``-reverse``: learn rules of the form
 > if feature1 <= threshold1 and feature2 <= threshold2 and ... and featureN <= thresholdN then class <= threshold
+
 instead of the rules of standard form.
 * ``-longrules``: skip the step of the algorithm where the rules are simplified. The rules that are learned thus contain more conditions in the left hand side and are generally less .
 * ``-validation``: by default, SRL use the entire dataset to learn one classifier. With the option, ``-validation`` a 10-fold crossvalidation is performed.
