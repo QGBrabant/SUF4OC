@@ -2,6 +2,7 @@
 
 SRL and RL-SUF are two algorithm for learning monotonic classifiers. SRL learns a set of decisions rules of the form
 > if feature1 >= threshold1 and feature2 >= threshold2 and ... and featureN >= thresholdN then class >= threshold
+
 while RL-SUF learns a model defined as the maximum of several SUFs (see ``Q. Brabant, M. Couceiro, D. Dubois, H. Prade, A. Rico, Extracting Decision Rules from Qualitative Data via Sugeno Utility Functionals. IPMU, 253–265, 2018``).
 This repository contains two jars SRL.jar and RL-SUF.jar.
 
