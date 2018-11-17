@@ -26,7 +26,9 @@ instead of the rules of standard form.
 ### Examples
 Suppose that SRL.jar is in the same directory as ``dataset1.txt``. The following command line
 ```java -jar SRL.jar -data dataset1.txt -reverse```
+
 gives a result of the form
+
 ```{
 	x1 <= 14	==>	y <= 1
 	x0 <= 5		==>	y <= 1
@@ -36,11 +38,15 @@ gives a result of the form
 	x0 <= 12	x2 <= 12	==>	y <= 0
 	x1 <= 9		x3 <= 4		==>	y <= 0
 	x0 <= 10	x1 <= 9		x2 <= 10	==>	y <= 0
-}```
+}
+```
 
 which represents the set of decision rules learned from the data in ``dataset1.txt``. For evaluating SRL on ``dataset1.txt``, launch
-```java -jar SRL.jar -validation -data dataset1.txt -nbruns 10```.
+
+```java -jar SRL.jar -validation -data dataset1.txt -nbruns 10```
+
 This gives a result of the form
+
 ```             MER: 	0.081	
 (over folds) std: 	0.018	
  (over runs) std:	0.0034	
@@ -50,7 +56,8 @@ This gives a result of the form
         nb rules: 	118.8	
     rule lengths: 	2.3	
 Rule length cumulative distribution (max-length:ratio):
-0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0 ```
+0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0
+```
 
 MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the mean error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
 Finally, rule length cumulative distribution give an average distribution of rules by size.
@@ -58,7 +65,9 @@ Finally, rule length cumulative distribution give an average distribution of rul
 
 
 ##RL-SUF
+
 RLSUF.jar contains a compiled version of the RL-SUF algorithm. The command line for launching the algorithm on data is
+
 ```
 java -jar SRL.jar [options]
 ```
@@ -75,10 +84,14 @@ java -jar SRL.jar [options]
 
 
 ###Examples
+
 Suppose that RLSUF.jar is in the same directory as ``dataset1.txt``.
 The command 
+
 ```java -jar RLSUF.jar -data dataset1.txt```
+
 gives a result of the form
+
 ```{
 <<
 Focal sets:
@@ -121,7 +134,8 @@ This gives a result of the form
         nb rules: 	118.8	
     rule lengths: 	2.3	
 Rule length cumulative distribution (max-length:ratio):
-0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0 ```
+0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0
+```
 
 MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the mean error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
 Finally, rule length cumulative distribution give an average distribution of rules by size.
