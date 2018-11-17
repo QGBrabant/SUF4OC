@@ -92,7 +92,9 @@ java -jar SRL.jar [options]
 Suppose that RLSUF.jar is in the same directory as ``dataset1.txt``.
 The command 
 
-```java -jar RLSUF.jar -data dataset1.txt```
+```
+java -jar RLSUF.jar -data dataset1.txt
+```
 
 gives a result of the form
 
@@ -125,7 +127,9 @@ phi5:	0-16		X		17-29		30
 
 which represents a set of SUFs. For evaluating SRL on ``dataset1.txt``, launch
 
-```java -jar RLSUF.jar -validation -data dataset1.txt -nbruns 10 -rhoStart 0.95 -rhoEnd 1.01```
+```
+java -jar RLSUF.jar -validation -data dataset1.txt -nbruns 10 -rhoStart 0.95 -rhoEnd 1.01
+```
 
 This gives a result of the form
 
