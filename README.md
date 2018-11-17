@@ -25,7 +25,9 @@ instead of the rules of standard form.
 
 ### Examples
 Suppose that SRL.jar is in the same directory as ``dataset1.txt``. The following command line
-```java -jar SRL.jar -data dataset1.txt -reverse```
+```
+java -jar SRL.jar -data dataset1.txt -reverse
+```
 
 gives a result of the form
 
@@ -43,7 +45,9 @@ gives a result of the form
 
 which represents the set of decision rules learned from the data in ``dataset1.txt``. For evaluating SRL on ``dataset1.txt``, launch
 
-```java -jar SRL.jar -validation -data dataset1.txt -nbruns 10```
+```
+java -jar SRL.jar -validation -data dataset1.txt -nbruns 10
+```
 
 This gives a result of the form
 
