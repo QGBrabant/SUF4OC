@@ -52,4 +52,19 @@ public class Misc {
             return -666;
         }
     }
+    
+    public static double ceil(double value, int places) {
+        try {
+            if (places < 0) {
+                throw new IllegalArgumentException();
+            }
+
+            BigDecimal bd = new BigDecimal(value);
+            bd = bd.setScale(places, RoundingMode.CEILING);
+            return bd.doubleValue();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return -666;
+        }
+    }
 }

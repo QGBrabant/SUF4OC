@@ -16,19 +16,19 @@ import java.util.function.Function;
  *
  * @author qgbrabant
  */
-public class ResultStack<R extends Serializable> implements Serializable {
+public class ResultStack implements Serializable {
 
-    private final List<R> values;
+    private final List<Result> values;
 
     public ResultStack() {
         values = new ArrayList<>();
     }
 
-    public void addValue(R d) {
+    public void addValue(Result d) {
         this.values.add(d);
     }
 
-    public Double getMeanValue(Function<R, Double> eval) {
+    public Double getMeanValue(Function<Result, Double> eval) {
         return this.values
                 .stream()
                 .map(eval)
@@ -36,20 +36,20 @@ public class ResultStack<R extends Serializable> implements Serializable {
                 / this.values.size();
     }
 
-    public Double getStandardDeviation(Function<R, Double> eval) {
+    public Double getStandardDeviation(Function<Result, Double> eval) {
         double mean = this.getMeanValue(eval);
         return sqrt(this.values
                 .stream()
                 .map(eval)
                 .map(x -> (x - mean) * (x - mean))
                 .reduce(0., (x, y) -> x + y)
-                / this.values.size());
+        / this.values.size());
     }
 
-    public List<Double> getMeanValueRow(Function<R, List<Double>> eval) {
+    public List<Double> getMeanValueRow(Function<Result, List<Double>> eval) {
         List<Double> globalRes = new ArrayList<>();
         List<Double> res;
-        for (R r : this.values) {
+        for (Result r : this.values) {
             res = eval.apply(r);
             for (int i = 0; i < res.size(); i++) {
                 if (i >= globalRes.size()) {
