@@ -15,11 +15,11 @@ java -jar SRL.jar [options]
 ```
 
 ### Options
-* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for the form of the data). [path] can also be replaced by ``VCDomLEMBenchmark``: in that case SRL will be run on the 12 datasets of the ``datasets`` folder.
+* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for the form of the data). [path] can also be replaced by ``VCDomLEMBenchmark``: in that case SRL will be run on the 12 datasets of the ``datasets`` folder (``SRL.jar`` and ``datasets`` have to be in the same folder).
 * ``-reverse``: learn rules of the form
 > if feature1 <= threshold1 and feature2 <= threshold2 and ... and featureN <= thresholdN then class <= threshold
 instead of the rules of standard form.
-* ``longrules``: skip the step of the algorithm where the rules are simplified. The rules that are learned thus contain more conditions in the left hand side.
+* ``-longrules``: skip the step of the algorithm where the rules are simplified. The rules that are learned thus contain more conditions in the left hand side and are generally less .
 * ``-validation``: by default, SRL use the entire dataset to learn one classifier. With the option, ``-validation`` a 10-fold crossvalidation is performed.
 	* ``-nbruns [value]``: number of times the crossvalidation is done. Results are averaged from all runs. By default, the number of run is set to 1.
 
@@ -37,6 +37,7 @@ gives a result of the form
 	x1 <= 9		x3 <= 4		==>	y <= 0
 	x0 <= 10	x1 <= 9		x2 <= 10	==>	y <= 0
 }```
+
 which represents the set of decision rules learned from the data in ``dataset1.txt``. For evaluating SRL on ``dataset1.txt``, launch
 ```java -jar SRL.jar -validation -data dataset1.txt -nbruns 10```.
 This gives a result of the form
@@ -50,6 +51,7 @@ This gives a result of the form
     rule lengths: 	2.3	
 Rule length cumulative distribution (max-length:ratio):
 0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0 ```
+
 MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the mean error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
 Finally, rule length cumulative distribution give an average distribution of rules by size.
 
@@ -103,9 +105,13 @@ phi5:	0-16		X		17-29		30
 >>
 }
 ```
+
 which represents a set of SUFs. For evaluating SRL on ``dataset1.txt``, launch
-```java -jar RLSUF.jar -validation -data dataset1.txt -nbruns 10 -rhoStart 0.95 -rhoEnd 1.01```.
+
+```java -jar RLSUF.jar -validation -data dataset1.txt -nbruns 10 -rhoStart 0.95 -rhoEnd 1.01```
+
 This gives a result of the form
+
 ```             MER: 	0.081	
 (over folds) std: 	0.018	
  (over runs) std:	0.0034	
@@ -116,6 +122,7 @@ This gives a result of the form
     rule lengths: 	2.3	
 Rule length cumulative distribution (max-length:ratio):
 0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0 ```
+
 MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the mean error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
 Finally, rule length cumulative distribution give an average distribution of rules by size.
 
