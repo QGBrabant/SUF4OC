@@ -32,7 +32,8 @@ java -jar SRL.jar -data dataset1.txt -reverse
 
 gives a result of the form
 
-```{
+```
+{
 	x1 <= 14	==>	y <= 1
 	x0 <= 5		==>	y <= 1
 	x1 <= 10	==>	y <= 1
@@ -52,7 +53,8 @@ java -jar SRL.jar -validation -data dataset1.txt -nbruns 10
 
 This gives a result of the form
 
-```             MER: 	0.081	
+```
+             MER: 	0.081	
 (over folds) std: 	0.018	
  (over runs) std:	0.0034	
              MAE: 	0.081	
@@ -60,12 +62,12 @@ This gives a result of the form
  (over runs) std:	0.0034	
         nb rules: 	118.8	
     rule lengths: 	2.3	
-Rule length cumulative distribution (max-length:ratio):
+Rule length distribution (max-length:ratio):
 0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0
 ```
 
-MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the mean error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
-Finally, rule length cumulative distribution give an average distribution of rules by size.
+MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the average error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rule lengths are respectively the overall average number of rules in the model and the overall average size of rules.
+Finally, rule length distribution give an average distribution of rules by size.
 
 
 
@@ -77,14 +79,14 @@ RLSUF.jar contains a compiled version of the RL-SUF algorithm. The command line 
 java -jar SRL.jar [options]
 ```
 
-* ``-data [path]``: same as for RL-SUF
+* ``-data [path]``: same as for RL-SUF.
 * ``-reverse``: use a minimum of SUFs instead of a maximum of SUFs.
-* ``rho [value]``: If this option is used, the program run an additionnal step of pruning (that will remove some SUFs from the model). This step depends on a parameter ``rho``. The value of ``rho`` should usually be set close to 1. The lower the value of ``rho``, the more SUFs are removed from the model.
-* ``-validation``: by default, SRL use the entire dataset to learn one classifier. With the option, ``-validation`` a 10-fold crossvalidation is performed. When using this option, it is possible to compare the result for several values of ``rho``. The pruning step will be performed only if the values of ``-rhoStart`` and ``-rhoEnd`` are specified.
-	* ``-rhoStart [value]``: lowest value of rho used in the test, default: 1.1
-	* ``-rhoEnd [value]``: highest value of rho used in the test, default: 1.1
-	* ``-rhoSteps [value]``: amount of change in the value of rho between each test, default: 0.01
-	* ``-nbruns [value]``: number of times the crossvalidation is done. Results are averaged from all runs. By default, the number of run is set to 1.
+* ``rho [value]``: If this option is used, the program runs an additionnal step of pruning (which will remove some SUFs from the model). This step depends on a parameter ``rho``. The value of ``rho`` should usually be set close to 1. The lower the value of ``rho``, the more SUFs are removed from the model.
+* ``-validation``: by default, SRL uses the entire dataset to learn one classifier. With the option, ``-validation`` a 10-fold crossvalidation is performed. When using this option, it is possible to compare the result for several values of ``rho``. The pruning step will be performed only if the values of ``-rhoStart`` and ``-rhoEnd`` are specified.
+	* ``-rhoStart [value]``: lowest value of ``rho`` used in the test, default: 1.1
+	* ``-rhoEnd [value]``: highest value of ``rho`` used in the test, default: 1.1
+	* ``-rhoSteps [value]``: amount of change in the value of ``rho`` between each test, default: 0.01
+	* ``-nbruns [value]``: number of times the crossvalidation is done. Results are averaged from all runs. By default, the number of runs is set to 1.
 
 
 
@@ -99,7 +101,8 @@ java -jar RLSUF.jar -data dataset1.txt
 
 gives a result of the form
 
-```{
+```
+{
 <<
 Focal sets:
 {2}->3, {1}->2, {}->0, {3,4}->3, {1,3}->3, {0}->3, 
@@ -134,7 +137,8 @@ java -jar RLSUF.jar -validation -data dataset1.txt -nbruns 10 -rhoStart 0.95 -rh
 
 This gives a result of the form
 
-```             MER: 	0.081	
+```
+             MER: 	0.081	
 (over folds) std: 	0.018	
  (over runs) std:	0.0034	
              MAE: 	0.081	
@@ -142,12 +146,12 @@ This gives a result of the form
  (over runs) std:	0.0034	
         nb rules: 	118.8	
     rule lengths: 	2.3	
-Rule length cumulative distribution (max-length:ratio):
+Rule length distribution (max-length:ratio):
 0:0.0 1:0.058 2:0.62 3:0.272 4:0.045 5:0.005 6:0.0
 ```
 
-MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the mean error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
-Finally, rule length cumulative distribution give an average distribution of rules by size.
+MER and MAE respectively stand for Missclassification Error Rate (the ratio of missclassified rows) and for Mean Absolute Error. Both error are measured on test data for each fold and averaged. Std over folds correspond to the standard deviation of error scores over the folds during one run. Std over runs is the standard deviation of the average error scores of each run (this line is displayed only if nbruns > 1). Nb rules and rules lengths are respectively the overall average number of rules in the model and the overall average size of rules.
+Finally, rule length distribution give an average distribution of rules by size.
 
 
 ## The data file
@@ -165,10 +169,13 @@ DATA:
 1,14,7,good
 ...
 ```
-The keyword ``ATTRIBUTES:`` should be followed by the type of the scale of each attribute, and the scale of classes. Three types of scales are possible
+The keyword ``ATTRIBUTES:`` should be followed by the type of the scale of each attribute. The last row before ``DATA:`` should describe the scale of classes.
+Three types of scales are possible
 * ``numerical``: when the scale is numerical,
-* ``numerical_reversed``: when the scale is numerical, but the order is reversed,
-* ``[a,b,...,z]``: a list of elements (between square brackets, separated by commas), is inerpreted as the definition of a scale. Elements should appear in increasing order.
+* ``numerical_reversed``: when the scale is numerical, but its order is reversed,
+* ``[a,b,...,z]``: a list of elements (between square brackets, separated by commas), is interpreted as the definition of a scale. Elements should appear in increasing order.
 
 Note that if the number of attributes is n, then there should be n+1 lines between ``ATTRIBUTES:`` and ``DATA:``. The last of this line should correspond to the classes.
 The rows after ``DATA:`` contain the examples from which the classifier is learned.
+
+**Note** The ``datasets`` folder contains the datasets used in _J. Błaszczyński, R. Słowiński, M. Szeląg, Sequential covering rule induction algorithm for variable consistency rough set approaches, Information Sciences 181(5), 2011_.
