@@ -79,7 +79,7 @@ RLSUF.jar contains a compiled version of the RL-SUF algorithm. The command line 
 java -jar SRL.jar [options]
 ```
 
-* ``-data [path]``: same as for RL-SUF.
+* ``-data [path]``: same as for SRL.
 * ``-reverse``: use a minimum of SUFs instead of a maximum of SUFs.
 * ``rho [value]``: If this option is used, the program runs an additionnal step of pruning (which will remove some SUFs from the model). This step depends on a parameter ``rho``. The value of ``rho`` should usually be set close to 1. The lower the value of ``rho``, the more SUFs are removed from the model.
 * ``-validation``: by default, SRL uses the entire dataset to learn one classifier. With the option, ``-validation`` a 10-fold crossvalidation is performed. When using this option, it is possible to compare the result for several values of ``rho``. The pruning step will be performed only if the values of ``-rhoStart`` and ``-rhoEnd`` are specified.
