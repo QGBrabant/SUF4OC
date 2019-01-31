@@ -3,24 +3,24 @@
 SRL and RL-SUF are two algorithms for learning monotonic classifiers. SRL learns a set of decision rules of the form
 > if feature1 >= threshold1 and feature2 >= threshold2 and ... and featureN >= thresholdN then class >= threshold
 
-while RL-SUF learns a model defined as the maximum of several SUFs (see _Q. Brabant, M. Couceiro, D. Dubois, H. Prade, A. Rico, Extracting Decision Rules from Qualitative Data via Sugeno Utility Functionals. IPMU, 253–265, 2018_).
+while RL-SUF learns a model defined as the maximum of several SUFs (see [Q. Brabant, M. Couceiro, D. Dubois, H. Prade, A. Rico, Extracting Decision Rules from Qualitative Data via Sugeno Utility Functionals. IPMU, 253–265, 2018](https://hal.inria.fr/hal-01670924)).
 This repository contains two jars ``SRL.jar`` and ``RL-SUF.jar``.
 
 
 ## SRL
 
-``SRL.jar`` contains a compiled version of the SRL algorithm. The command line for launching the algorithm on data is
+``SRL.jar`` contains a compiled version of the SRL algorithm. The command line for launching it is
 ```
 java -jar SRL.jar [options]
 ```
 
 ### Options
-* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for the form of the data). Instead of a path, you can put ``VCDomLEMBenchmark``: in that case SRL will be run on the 12 datasets of the ``datasets`` folder (``SRL.jar`` and ``datasets`` have to be in the same folder).
+* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for how to format data). In case you want to reproduce the results of the paper, you can put ``VCDomLEMBenchmark`` instead of a path ; SRL will then be run on the 12 datasets from the ``datasets`` folder (``datasets`` has to be in the working directory).
 * ``-reverse``: learn rules of the form
 > if feature1 <= threshold1 and feature2 <= threshold2 and ... and featureN <= thresholdN then class <= threshold
 
 instead of the rules of standard form.
-* ``-longrules``: skip the step of the algorithm where the rules are simplified. The rules that are learned thus contain more conditions in the left hand side and are generally less .
+* ``-longrules``: skip the step of the algorithm where the rules are simplified. The rules that are learned thus contain more conditions in the left hand side and are more prone to overfitting.
 * ``-validation``: by default, SRL use the entire dataset to learn one classifier. With the option, ``-validation`` a 10-fold crossvalidation is performed.
 	* ``-nbruns [value]``: number of times the crossvalidation is done. Results are averaged from all runs. By default, the number of run is set to 1.
 
@@ -172,7 +172,7 @@ DATA:
 The keyword ``ATTRIBUTES:`` should be followed by the type of the scale of each attribute. The last row before ``DATA:`` should describe the scale of classes.
 Three types of scales are possible
 * ``numerical``: when the scale is numerical,
-* ``numerical_reversed``: when the scale is numerical, but its order is reversed,
+* ``numerical_reversed``: when the scale is numerical, but the algorithm should use the inverse order (i.e., the attribute is negatively correlated to the class),
 * ``[a,b,...,z]``: a list of elements (between square brackets, separated by commas), is interpreted as the definition of a scale. Elements should appear in increasing order.
 
 Note that if the number of attributes is n, then there should be n+1 lines between ``ATTRIBUTES:`` and ``DATA:``. The last of this line should correspond to the classes.
