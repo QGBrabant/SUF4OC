@@ -178,4 +178,4 @@ Three types of scales are possible
 Note that if the number of attributes is n, then there should be n+1 lines between ``ATTRIBUTES:`` and ``DATA:``. The last of this line should correspond to the classes.
 The rows after ``DATA:`` contain the examples from which the classifier is learned.
 
-**Note** The ``datasets`` folder contains the datasets used in _J. Błaszczyński, R. Słowiński, M. Szeląg, Sequential covering rule induction algorithm for variable consistency rough set approaches, Information Sciences 181(5), 2011_.
+**Note** In the ``datasets`` folder, the datasets ``ERA``, ``ESL``, ``LEV``, ``SWD``, ``bank-g``, ``breast-cancer-wisconsin``, ``breast-cancer_nm``, ``car``, ``cpu4classes``, ``densbosch``, ``fame``, and ``windsor`` are the datasets used in _J. Błaszczyński, R. Słowiński, M. Szeląg, Sequential covering rule induction algorithm for variable consistency rough set approaches, Information Sciences 181(5), 2011_, and were provided by Roman Słowiński.
