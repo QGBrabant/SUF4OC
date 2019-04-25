@@ -15,7 +15,7 @@ java -jar SRL.jar [options]
 ```
 
 ### Options
-* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for how to format data). In case you want to reproduce the results of the paper, you can put ``VCDomLEMBenchmark`` instead of a path ; SRL will then be run on the 12 datasets from the ``datasets`` folder (``datasets`` has to be in the working directory).
+* ``-data [path]``: the argument ``[path]`` is the path of the file containing the data (see next section for how to format data). It can also be the path to a directory, in which case all datasets in the directory are going to be used.
 * ``-reverse``: learn rules of the form
 > if feature1 <= threshold1 and feature2 <= threshold2 and ... and featureN <= thresholdN then class <= threshold
 
