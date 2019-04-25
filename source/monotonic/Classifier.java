@@ -13,5 +13,6 @@ import tuples.TupleImpl;
  */
 public interface Classifier {
     public int apply(int[] x); 
-    public int apply(TupleImpl x); 
+    public int apply(TupleImpl x);
+    public boolean isRejection();
 }

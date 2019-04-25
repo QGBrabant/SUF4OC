@@ -14,9 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import tuples.Tuple;
-import chains.Chain;
 import orders.MaxSet;
-import chains.ShortChain;
+import chains.Chain;
 import java.util.Collections;
 import orders.PartiallyOrderable;
 import tuples.TupleImpl;
@@ -29,6 +28,7 @@ public class RuleSet extends MaxSet<Instance> implements Classifier, PartiallyOr
 
     private Chain[] domain;
     private Chain codomain;
+    private boolean isRejectSet;
     
     public RuleSet(RuleSet R){
         super(R);
@@ -93,7 +93,7 @@ public class RuleSet extends MaxSet<Instance> implements Classifier, PartiallyOr
                 //split with ","
                 valueNames = line.split(", ");
                 //create chain of the right length
-                scale = new ShortChain(valueNames.length);
+                scale = new Chain(valueNames.length);
                 chainList.add(scale);
                 //map each string value from the splitted [ ] part to an element of the chain (in increasing order)
                 dict = new HashMap<>();
@@ -263,6 +263,21 @@ public class RuleSet extends MaxSet<Instance> implements Classifier, PartiallyOr
         sb.append("}");
         
         return sb.toString();
+    }
+    
+    public RuleSet inverse(){
+        InstanceList l = new InstanceList(this.domain,this.codomain);
+        l.addAll(this);
+        l = l.inverse();
+        return new RuleSet(l);
+    }
+    
+    public void setRejection(boolean r){
+        this.isRejectSet = r;
+    }
+    
+    public boolean isRejection(){
+        return this.isRejectSet;
     }
 
 }

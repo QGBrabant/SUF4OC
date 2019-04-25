@@ -87,6 +87,11 @@ public class SugenoUtility implements Serializable, Classifier {
 
     }
 
+    @Override
+    public boolean isRejection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
     private class Node extends BTupleImpl {
 

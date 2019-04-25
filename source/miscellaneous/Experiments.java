@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import chains.Chain;
-import chains.ShortChain;
+import chains.Chain;
 import java.text.DecimalFormat;
 import monotonic.Classifier;
 import monotonic.InstanceList;
@@ -173,9 +173,9 @@ public class Experiments {
 
                     Chain[] domain = new Chain[d];
                     for (int i = 0; i < d; i++) {
-                        domain[i] = new ShortChain(h);
+                        domain[i] = new Chain(h);
                     }
-                    Chain codomain = new ShortChain(h);
+                    Chain codomain = new Chain(h);
                     int m = (int) Math.ceil(Math.pow(h, d) * 0.05);
                     InstanceList dataset = DataTools.randomMonotonicDataset(m, domain, codomain);
 
@@ -448,7 +448,8 @@ public class Experiments {
     public static void evaluateLearner(
             List<InstanceList> datasets,
             Function<InstanceList, Classifier> process,
-            int numberOfRun)
+            int numberOfRun,
+            int nbfolds)
             throws IOException {
 
         Result res;
@@ -459,7 +460,7 @@ public class Experiments {
             System.out.print("Run:");
             for (int k = 0; k < numberOfRun; k++) {
                 System.out.print(" " + (k + 1) + "/" + numberOfRun);
-                res = tenfoldClassifierLearning(D, process, true);
+                res = manyFoldEvaluation(D, process, nbfolds, true);
                 Context.addResult(D.getName(), res);
 
             }
@@ -486,26 +487,31 @@ public class Experiments {
         }
     }
 
-    public static Result tenfoldClassifierLearning(
+    public static Result manyFoldEvaluation(
             InstanceList dataset,
             Function<InstanceList, Classifier> process,
+            int nbfolds,
             boolean silent)
             throws IOException {
 
         Result res = new Result();
 
-        List<InstanceList> pieces = new ArrayList<>(dataset.getPieces(10));
+        List<InstanceList> pieces = new ArrayList<>(dataset.getPieces(nbfolds));
         Classifier R;
         InstanceList train;
         InstanceList test;
 
-        for (int f = 0; f < 10; f++) {
+        for (int f = 0; f < nbfolds; f++) {
             test = pieces.get(0);
             pieces.remove(0);
             train = new InstanceList(pieces);
             pieces.add(test);
 
             R = process.apply(train);
+            
+            if(R.isRejection()){
+                test = test.inverse();
+            }
 
             res.MAE_scores.add(DataTools.MAE(R, test));
             res.MER_scores.add(DataTools.MER(R, test));

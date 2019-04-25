@@ -5,6 +5,7 @@
  */
 package mains;
 
+import java.io.File;
 import miscellaneous.Experiments;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,21 +86,19 @@ public class Launcher {
         }
     }
 
-    public static List<InstanceList> getDatasets(boolean rejectionRules) throws IOException {
+    public static List<InstanceList> getDatasets() throws IOException {
         String datasetPath = Context.getOption("-data");
         if (datasetPath == null) {
             System.out.println("Specify the path of the file containing the data (option -data).");
             System.exit(0);
         }
         List<InstanceList> datasets;
-        if (datasetPath.toLowerCase().equals("vcdomlembenchmark")) {
-            datasets = DataTools.VCDomLEMBenchmark(rejectionRules);
-        } else if (datasetPath.toLowerCase().equals("calligraphy")) {
-            datasets = DataTools.calligraphyBenchmark(rejectionRules);
+
+        if (new File(datasetPath).isDirectory()) {
+            datasets = DataTools.datasetsFromFolder(datasetPath);
         } else {
             datasets = new ArrayList<>();
-            datasets.add(DataTools.extractDataset(
-                    datasetPath, rejectionRules));
+            datasets.add(DataTools.extractDataset(datasetPath));
             datasets.get(datasets.size() - 1).setName(datasetPath);
         }
 
@@ -114,7 +113,7 @@ public class Launcher {
             rejectionRules = true;
         }
 
-        Experiments.rulesTranslation(getDatasets(rejectionRules));
+        Experiments.rulesTranslation(getDatasets());
     }
 
     public static void interpolation() throws IOException {
@@ -128,7 +127,7 @@ public class Launcher {
             rejectionRules = true;
         }
 
-        Experiments.SUFinterpolationBenchmark(getDatasets(rejectionRules),!Context.getArgList().contains("-longrules"));
+        Experiments.SUFinterpolationBenchmark(getDatasets(),!Context.getArgList().contains("-longrules"));
 
     }
 
@@ -158,15 +157,16 @@ public class Launcher {
             rhoStep = Double.parseDouble(Context.getOption("-rhoStep"));
         }
         if (Context.getArgList().contains("-longrules")) {
-            Experiments.evaluateMaxSUFLearner(getDatasets(rejectionRules), SSProcesses::PROCESS_1, nbruns, rhoStart, rhoEnd, rhoStep);
+            Experiments.evaluateMaxSUFLearner(getDatasets(), SSProcesses::PROCESS_1, nbruns, rhoStart, rhoEnd, rhoStep);
         }else{
-            Experiments.evaluateMaxSUFLearner(getDatasets(rejectionRules), SSProcesses::PROCESS_2, nbruns, rhoStart, rhoEnd, rhoStep);
+            Experiments.evaluateMaxSUFLearner(getDatasets(), SSProcesses::PROCESS_2, nbruns, rhoStart, rhoEnd, rhoStep);
         }
     }
 
     public static void simpleRuleLearning() throws IOException {
         System.out.println("===== SRL =====");
         int nbruns = 1;
+        int nbfolds = 10;
 
         boolean rejectionRules = false;
 
@@ -176,10 +176,13 @@ public class Launcher {
         if (Context.getOption("-nbruns") != null) {
             nbruns = Integer.parseInt(Context.getOption("-nbruns"));
         }
+        if (Context.getOption("-nbfolds") != null) {
+            nbfolds = Integer.parseInt(Context.getOption("-nbfolds"));
+        }
         if (Context.getArgList().contains("-longrules")) {
-            Experiments.evaluateLearner(getDatasets(rejectionRules), SSProcesses::LAMBDA_RULE_SET, nbruns);
+            Experiments.evaluateLearner(getDatasets(), SSProcesses::LAMBDA_RULE_SET, nbruns, nbfolds);
         }else{
-            Experiments.evaluateLearner(getDatasets(rejectionRules), SSProcesses::SRL, nbruns); 
+            Experiments.evaluateLearner(getDatasets(), SSProcesses::SRL, nbruns, nbfolds); 
         }
     }
 
@@ -193,7 +196,7 @@ public class Launcher {
             nbruns = Integer.parseInt(Context.getOption("-nbruns"));
         }
 
-        Experiments.analyzeRelabeling(getDatasets(rejectionRules), nbruns);
+        Experiments.analyzeRelabeling(getDatasets(), nbruns);
     }
 
 }

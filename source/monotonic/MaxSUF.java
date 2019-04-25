@@ -51,5 +51,10 @@ public class MaxSUF extends ArrayList<SugenoUtility> implements Classifier{
         sb.append("}");
         return sb.toString();
     }
+
+    @Override
+    public boolean isRejection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

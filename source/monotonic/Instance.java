@@ -5,9 +5,7 @@
  */
 package monotonic;
 
-import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Objects;
 import tuples.TupleImpl;
 import chains.Chain;
 import orders.OrderTools;
@@ -24,6 +22,7 @@ public class Instance implements PartiallyOrderable {
     private final int[] premisses;
     private final TupleImpl features; // This contains the same thing as premisses. Just a quickfix for a bad optimization.
     private final int conclusion;
+    private Instance inverse ;
 
     public Instance(int[] premisses, int conclusion, Chain[] domain, Chain codomain) {
         this.premisses = (int[]) Arrays.copyOf(premisses, premisses.length);
@@ -136,6 +135,24 @@ public class Instance implements PartiallyOrderable {
     public Integer relation(int[] x) {
         return OrderTools.componentWiseRelation(this.premisses, x);
     }
+    
+    public Instance inverse(){
+        if(inverse == null){
+            Chain[] newdomain = new Chain[this.domain.length];
+            for(int i = 0; i < newdomain.length; i ++){
+                newdomain[i] = this.domain[i].inverse();
+            }
+            Chain newcodomain = this.codomain.inverse();
+            int[] newpremisses = new int[this.premisses.length];
+            for(int i = 0; i < newdomain.length; i ++){
+                newpremisses[i] = this.domain[i].inv(this.premisses[i]);
+            }
+            int newconclusion = this.codomain.inv(this.conclusion);
+            this.inverse = new Instance(newpremisses,newconclusion,newdomain,newcodomain);
+            this.inverse.inverse = this;
+        }
+        return this.inverse;
+    }
 
     String niceString(boolean rejection) {
         StringBuilder res = new StringBuilder();
@@ -143,11 +160,7 @@ public class Instance implements PartiallyOrderable {
             if (this.features.get(i) > 0) {
                 res.append("x");
                 res.append(i);
-                if (rejection) {
-                    res.append(" <= ");
-                } else {
-                    res.append(" >= ");
-                }
+                res.append(this.domain[i].getOrderSymbol());
                 res.append(this.domain[i].getName(this.getFeature(i)));
                 if(("x <= "+this.domain[i].getName(this.getFeature(i))).length() < 7){
                     res.append("\t");

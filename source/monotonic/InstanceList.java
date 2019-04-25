@@ -5,33 +5,23 @@
  */
 package monotonic;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import chains.Chain;
 import orders.OrderTools;
 import orders.Order;
-import orders.Poset;
 import orders.MaxSet;
 
-/**
- *
- * @author qgbrabant
- * @param <int>
- * @param <Chain>
- */
-public class InstanceList extends ArrayList<Instance> implements Serializable {
+
+public class InstanceList extends ArrayList<Instance> {
 
     private final Chain[] domain;
     private final Chain codomain;
     private String name = "unnamed";
     private boolean hasID = false;
-
-
+    
     public InstanceList(Chain[] domain, Chain codomain) {
         this.domain = domain;
         this.codomain = codomain;
@@ -143,6 +133,19 @@ public class InstanceList extends ArrayList<Instance> implements Serializable {
         ms.addAll(this);
         InstanceList res = this.getEmptyShell();
         res.addAll(ms);
+        return res;
+    }
+    
+    public InstanceList inverse(){
+        Chain[] newdomain = new Chain[this.domain.length];
+        for(int i = 0; i < newdomain.length; i ++){
+            newdomain[i] = this.domain[i].inverse();
+        }
+        Chain newcodomain = this.codomain.inverse();
+        InstanceList res = new InstanceList(newdomain, newcodomain);
+        for(Instance inst : this){
+            res.add(inst.inverse());
+        }
         return res;
     }
 

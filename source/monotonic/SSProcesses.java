@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import chains.Chain;
-import java.security.DomainCombiner;
 import orders.OrderTools;
 import tuples.TupleImpl;
 import orders.Order;
@@ -138,7 +137,19 @@ public class SSProcesses {
     // RULE-SET LEARNING PROCESSES //
     //                             //
     /////////////////////////////////
-    public static Classifier SRL(InstanceList dataset) {
+    
+    public static RuleSet twoSidedRuleLearning(InstanceList dataset){
+        InstanceList d = optimalRelabeling(dataset);
+        InstanceList dInv = d.inverse();
+        
+        RuleSet selectSet = new RuleSet(pruneCriteria(d.reduction(), d).reduction());
+        RuleSet rejectSet = new RuleSet(pruneCriteria(dInv.reduction(), dInv).reduction());
+        rejectSet.setRejection(true);
+        
+        return selectSet.size() > rejectSet.size() ? selectSet : rejectSet;
+    }
+    
+    public static RuleSet SRL(InstanceList dataset) {
         InstanceList d1 = optimalRelabeling(dataset);
         InstanceList d2 = pruneCriteria(d1.reduction(), d1).reduction();
 
@@ -586,6 +597,7 @@ public class SSProcesses {
             }
             X = new HashSet<>(MUS);
         }
+        
         return monotoneData;
 
     }

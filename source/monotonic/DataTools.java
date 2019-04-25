@@ -12,18 +12,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import static java.lang.Double.parseDouble;
-import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import chains.Chain;
 import chains.ChainBuilder;
-import chains.RealChainBuilder;
-import chains.ShortChain;
+import chains.ChainBuilder;
+import chains.Chain;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import orders.OrderTools;
@@ -34,78 +31,17 @@ import orders.OrderTools;
  */
 public class DataTools {
 
-    
-    public static List<InstanceList> VCDomLEMBenchmark(boolean flipScales) throws IOException {
+    public static List<InstanceList> datasetsFromFolder(String dir) throws IOException {
         List<InstanceList> datasets = new ArrayList<>();
-        String folder = "datasets";
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/breast-cancer_nm.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("Breast cancer - c");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/breast-cancer-wisconsin.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("Breast cancer - wisconsin");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/car.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("Car");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/cpu4classes.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("CPU");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/bank-g.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("bank-g");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/fame.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("fame");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/denbosch.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("denbosch");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/ERA.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("ERA");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/ESL.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("ESL");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/LEV.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("LEV");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/SWD.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("SWD");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/windsor.data", flipScales));
-        datasets.get(datasets.size() - 1).setName("windsor");
-
-        return datasets;
-    }
-
-    public static List<InstanceList> calligraphyBenchmark(boolean flipScales) throws IOException {
-        List<InstanceList> datasets = new ArrayList<>();
-        String folder = "../calligraphy";
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/error_calli_whole_V.txt", flipScales));
-        datasets.get(datasets.size() - 1).setName("calligaphy errors, whole exercise (V)");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/error_calli_whole_R.txt", flipScales));
-        datasets.get(datasets.size() - 1).setName("calligaphy errors, whole exercise (R)");
-
-        datasets.add(DataTools.extractDataset(
-                folder + "/error_calli_whole_L.txt", flipScales));
-        datasets.get(datasets.size() - 1).setName("calligaphy errors, whole exercise (L)");
-
+        File d = new File(dir);
+        assert d.isDirectory() : d.toPath();
+        for (File file : d.listFiles()) {
+            System.out.println(file.toPath());
+            if (file.isFile()) {
+                datasets.add(DataTools.extractDataset(file.getPath()));
+                datasets.get(datasets.size() - 1).setName(file.getName());
+            }
+        }
         return datasets;
     }
 
@@ -144,68 +80,9 @@ public class DataTools {
 
     }
 
-    public static InstanceList extractBreastCancerDataset(File f, boolean flipScales)
-            throws FileNotFoundException, IOException {
-
-        Chain codomain = new ShortChain(2);
-        Chain c = new ShortChain(10);
-        Chain[] domain = {c, c, c, c, c, c, c, c, c};
-
-        HashMap<String, Integer> lexicon = new HashMap<>();
-        for (int i = 1; i <= 10; i++) {
-            if (flipScales) {
-                lexicon.put("" + i, 10 - i);
-            } else {
-                lexicon.put("" + i, i - 1);
-            }
-        }
-
-        InstanceList d = new InstanceList(domain, codomain);
-
-        try (BufferedReader fileReader = new BufferedReader(new FileReader(f))) {
-            String line; //One line of the parsed file
-            String[] tokens; //The line in splitted form
-            int[] x = new int[9];
-            boolean bullshit;
-            while ((line = fileReader.readLine()) != null) {
-                bullshit = false;
-                tokens = line.split(",");
-                for (int i = 1; i <= 9; i++) {
-                    if (lexicon.get(tokens[i]) == null) {
-                        bullshit = true;
-                    } else {
-                        x[i - 1] = lexicon.get(tokens[i]);
-                    }
-                }
-                if (!bullshit) {
-                    if (tokens[10].equals("2")) {
-                        if (flipScales) {
-                            d.add(new Instance(x, 1, domain, codomain));
-                        } else {
-                            d.add(new Instance(x, 0, domain, codomain));
-                        }
-                    } else {
-                        if (flipScales) {
-                            d.add(new Instance(x, 0, domain, codomain));
-                        } else {
-                            d.add(new Instance(x, 1, domain, codomain));
-                        }
-                    }
-                }
-            }
-        } //One line of the parsed file
-
-        return d;
-    }
-
-   
-  
-
-    public static InstanceList extractDataset(String f, boolean flipScales)
-            throws FileNotFoundException, IOException {
+    public static InstanceList extractDataset(String f) throws FileNotFoundException, IOException {
 
         // Step 1: Parse the types of attributes 
-        
         List<String> attributeTypes = new ArrayList<>();
 
         BufferedReader fileReader = new BufferedReader(new FileReader(f));
@@ -226,69 +103,63 @@ public class DataTools {
         line = fileReader.readLine();
 
         int n = attributeTypes.size() - 1;
-        
-        // Step 2: Create the chains that form the domain and the codomain
 
+        // Step 2: Create the chains that form the domain and the codomain
         ChainBuilder[] builders = new ChainBuilder[n + 1];
 
         for (int i = 0; i < n + 1; i++) {
-            if (attributeTypes.get(i).equals("NUMERICAL")) {
-                builders[i] = new RealChainBuilder(!flipScales);
-            } else if (attributeTypes.get(i).equals("NUMERICAL_REVERSED")) {
-                builders[i] = new RealChainBuilder(flipScales);
+            if (attributeTypes.get(i).equals("NUMERICAL") || attributeTypes.get(i).equals("NUMERICAL_REVERSED")) {
+                builders[i] = new ChainBuilder();
             }
         }
-
         String[] tokens;
 
         while (line != null) {
             tokens = line.split(",");
             for (int i = 0; i < n + 1; i++) {
                 if (attributeTypes.get(i).equals("NUMERICAL") || attributeTypes.get(i).equals("NUMERICAL_REVERSED")) {
-                    builders[i].add(parseDouble(tokens[i]));
+                    builders[i].add(tokens[i]);
                 }
-                
             }
             line = fileReader.readLine();
         }
-        ChainBuilder.Lexicon[] lexs = new ChainBuilder.Lexicon[n + 1];
-        Map<String, Integer>[] maps = new HashMap[n + 1];
+
         Chain[] domain = new Chain[n];
         String type;
         for (int i = 0; i < n; i++) {
             type = attributeTypes.get(i);
-            if (type.equals("NUMERICAL") || type.equals("NUMERICAL_REVERSED")) {
-                lexs[i] = builders[i].buildChain();
-                domain[i] = lexs[i].getChain();
-            } else {
-                maps[i] = new HashMap<>();
-                type = type.replaceAll(" |\\[|]", "");
-                tokens = type.split(",");
-
-                domain[i] = new ShortChain(tokens);
-                for (int k = 0; k < tokens.length; k++) {
-                    maps[i].put(tokens[k], flipScales ?  k : tokens.length - 1 - k);
-                }
+            switch (type) {
+                case "NUMERICAL":
+                    domain[i] = builders[i].buildChain(true);
+                    break;
+                case "NUMERICAL_REVERSED":
+                    domain[i] = builders[i].buildChain(false);
+                    break;
+                default:
+                    type = type.replaceAll(" |\\[|]", "");
+                    tokens = type.split(",");
+                    domain[i] = new Chain(tokens, ">=");
+                    break;
             }
         }
 
         Chain codomain;
         type = attributeTypes.get(n);
-        if (type.equals("NUMERICAL") || type.equals("NUMERICAL_REVERSED")) {
-            lexs[n] = builders[n].buildChain();
-            codomain = lexs[n].getChain();
-        } else {
-            maps[n] = new HashMap<>();
-            type = type.replaceAll(" |\\[|]", "");
-            tokens = type.split(",");
-            codomain = new ShortChain(tokens);
-            for (int k = 0; k < tokens.length; k++) {
-                maps[n].put(tokens[k], flipScales ? k : tokens.length - 1 - k);
-            }
+        switch (type) {
+            case "NUMERICAL":
+                codomain = builders[n].buildChain(true);
+                break;
+            case "NUMERICAL_REVERSED":
+                codomain = builders[n].buildChain(false);
+                break;
+            default:
+                type = type.replaceAll(" |\\[|]", "");
+                tokens = type.split(",");
+                codomain = new Chain(tokens, ">=");
+                break;
         }
-        
+
         // Step 3 : extract rows
-        
         InstanceList res = new InstanceList(domain, codomain);
 
         fileReader = new BufferedReader(new FileReader(f));
@@ -303,20 +174,11 @@ public class DataTools {
         while (line != null) {
             tokens = line.split(",");
             for (int i = 0; i < n; i++) {
-                type = attributeTypes.get(i);
-
-                if (type.equals("NUMERICAL") || type.equals("NUMERICAL_REVERSED")) {
-                    x[i] = lexs[i].get(parseDouble(tokens[i]));
-                } else {
-                    x[i] = maps[i].get(tokens[i]);
-                }
+                x[i] = domain[i].getByName(tokens[i]);
+                assert tokens[i].equals(domain[i].getName(x[i])) : tokens[i] + " / " + domain[i].getName(x[i]);
             }
+            y = codomain.getByName(tokens[n]);
 
-            if (attributeTypes.get(n).equals("NUMERICAL") || attributeTypes.get(n).equals("NUMERICAL_REVERSED")) {
-                y = lexs[n].get(parseDouble(tokens[n]));
-            } else {
-                y = maps[n].get(tokens[n]);
-            }
             res.add(new Instance(x, y, domain, codomain));
 
             line = fileReader.readLine();

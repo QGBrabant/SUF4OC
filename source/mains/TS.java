@@ -6,15 +6,8 @@
 package mains;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
-import static mains.Launcher.analyze_relabeling;
 import static mains.Launcher.getDatasets;
-import static mains.Launcher.interpolation;
-import static mains.Launcher.monotonicClassificationMaxSUF;
-import static mains.Launcher.simpleRuleLearning;
-import static mains.Launcher.translation;
 import miscellaneous.Context;
 import miscellaneous.Experiments;
 import monotonic.Classifier;
@@ -25,36 +18,28 @@ import monotonic.SSProcesses;
  *
  * @author qgbrabant
  */
-public class SRL {
-    
+public class TS {
+
     public static void main(String[] args) throws IOException {
         Launcher.parseArguments(args);
-        
+
         int nbruns = 1;
         int nbfolds = 10;
 
-        boolean rejectionRules = false;
-
-        if (Context.getArgList().contains("-rejection")) {
-            rejectionRules = true;
-        }
         if (Context.getOption("-nbruns") != null) {
             nbruns = Integer.parseInt(Context.getOption("-nbruns"));
         }
         if (Context.getOption("-nbfolds") != null) {
             nbfolds = Integer.parseInt(Context.getOption("-nbfolds"));
         }
-        
-        Function<InstanceList,Classifier> learner =  SSProcesses::SRL;
-        if (Context.getArgList().contains("-longrules")) {
-            learner = SSProcesses::LAMBDA_RULE_SET;
+
+        Function<InstanceList, Classifier> learner = SSProcesses::twoSidedRuleLearning;
+
+        if (Context.getArgList().contains("-validation")) {
+            Experiments.evaluateLearner(getDatasets(), learner, nbruns, nbfolds);
+        } else {
+            Experiments.learnRuleSet(getDatasets(), learner, false);
         }
-        
-        if(Context.getArgList().contains("-validation")){
-            Experiments.evaluateLearner(getDatasets(), learner, nbruns , nbfolds);
-        }else{
-            Experiments.learnRuleSet(getDatasets(), learner,rejectionRules);
-        }
-        
+
     }
 }

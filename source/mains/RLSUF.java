@@ -64,11 +64,9 @@ public class RLSUF {
             if (Context.getOption("-rhoStep") != null) {
                 rhoStep = Double.parseDouble(Context.getOption("-rhoStep"));
             }
-            Experiments.evaluateMaxSUFLearner(getDatasets(rejectionRules), learner, nbruns, rhoStart, rhoEnd, rhoStep);
-
+            Experiments.evaluateMaxSUFLearner(getDatasets(), learner, nbruns, rhoStart, rhoEnd, rhoStep);
         } else {
-
-            Experiments.learnMaxSUF(getDatasets(rejectionRules), learner, rhoStart, rejectionRules);
+            Experiments.learnMaxSUF(getDatasets(), learner, rhoStart, rejectionRules);
         }
 
     }
